@@ -1,0 +1,55 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.android.app.appupdate"
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode 2
+        versionName "1.0.1"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            android.applicationVariants.all { variant ->
+                variant.outputs.all {
+                    if (outputFileName != null && outputFileName.endsWith('debug.apk')) {
+                        outputFileName = "AppUpdate_dev${defaultConfig.versionName}.apk"
+                    }
+                }
+            }
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            android.applicationVariants.all { variant ->
+                variant.outputs.all {
+                    if (outputFileName != null && outputFileName.endsWith('release.apk')) {
+                        outputFileName = "AppUpdate_release${defaultConfig.versionName}.apk"
+                    }
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    //BasePopup主体库
+    implementation 'com.github.razerdp:BasePopup:2.2.0'
+    //BasePopup support支持库（如支持DialogFragment里弹Popup时的层序支持）
+    implementation 'com.github.razerdp:BasePopup-compat-support:2.2.0'
+    //BasePopup lifecycle支持库（如自动适配Activity/Fragment生命期dismiss/回收等）
+    implementation 'com.github.razerdp:BasePopup-compat-lifecycle:2.2.0'
+}
