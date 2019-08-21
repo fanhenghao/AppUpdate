@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
+        android:layout_marginTop="@dimen/margin_20"
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintRight_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_label"

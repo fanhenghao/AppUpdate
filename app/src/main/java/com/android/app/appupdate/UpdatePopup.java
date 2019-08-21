@@ -8,7 +8,7 @@ import razerdp.basepopup.BasePopupWindow;
 /**
  * @author fanhenghao
  * @time 2019/6/24 4:11 PM
- * @class describe：
+ * @class describe：这里弹窗继承BasePopupWindow使用，也可以直接用popupwindow（注意兼容性）
  */
 public class UpdatePopup extends BasePopupWindow {
 

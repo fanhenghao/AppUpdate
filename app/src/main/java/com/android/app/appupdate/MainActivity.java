@@ -61,8 +61,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 Intent intent = new Intent(mActivity, DownloadService.class);
-                                intent.putExtra("url", "https://github.com/fanhenghao/androidProject/raw/master/technology_rel1.0.1.apk");
-//                            intent.putExtra("url", "http://yunchudian.oss-cn-shanghai.aliyuncs.com/mobiletest/yunchudianManagerOnline.apk");
+                                intent.putExtra("url", "https://github.com/fanhenghao/AppUpdate/raw/master/AppUpdate_release1.0.1.apk");
                                 mActivity.startService(intent);
                                 Toast.makeText(mActivity, "后台更新下载中...", Toast.LENGTH_SHORT).show();
                                 mUpdatePopup.dismiss();

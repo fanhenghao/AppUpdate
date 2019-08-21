@@ -52,13 +52,12 @@ public class DownloadService extends Service {
             new File(DOWNLOAD_PATH).delete();
         }
         receiver();
-//        Log.i("开始下载APP："+url);
         DownloadManager dManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         Uri uri = Uri.parse(url);
         DownloadManager.Request request = new DownloadManager.Request(uri);
 
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "technology.apk");
-        request.setDescription("新版本下载中");
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "AppUpdate.apk");
+        request.setDescription("新版本下载中...");
         request.setTitle("版本更新");
 
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
@@ -86,7 +85,7 @@ public class DownloadService extends Service {
                     install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     install.addCategory(Intent.CATEGORY_DEFAULT);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//大于Android版本7.0
-                        Uri contentUri = FileProvider.getUriForFile(context, getPackageName() + ".provider", new File(DOWNLOAD_PATH));
+                        Uri contentUri = FileProvider.getUriForFile(context, "com.android.app.appupdate.provider", new File(DOWNLOAD_PATH));
                         install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         install.setDataAndType(contentUri, "application/vnd.android.package-archive");
                     } else {
