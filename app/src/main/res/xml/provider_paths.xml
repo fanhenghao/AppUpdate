@@ -5,7 +5,10 @@
     <!--<external-path name="beta_external_path" path="Download/"/>-->
     <!--<external-path name="beta_external_files_path" path="Android/data/"/>-->
 
+    <!-- 这段代码很重要，这里的路径+android.permission.REQUEST_INSTALL_PACKAGES权限就可以解决，8.0及以上版本，
+    不能自动安装下载包的问题 -->
     <root-path name="root" path="" />
+
     <external-path name="external_storage_root" path="." />
     <external-path name="external_storage_download" path="Download" />
 
