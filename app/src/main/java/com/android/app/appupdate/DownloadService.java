@@ -90,7 +90,8 @@ public class DownloadService extends Service {
                         install.setDataAndType(contentUri, "application/vnd.android.package-archive");
                     } else {
                         try {
-                            Uri downloadFileUri = dManager.getUriForDownloadedFile(refernece);
+//                            Uri downloadFileUri = dManager.getUriForDownloadedFile(refernece);
+                            Uri downloadFileUri = Uri.parse("file://" + new File(DOWNLOAD_PATH).getAbsolutePath());
                             install.setDataAndType(downloadFileUri, "application/vnd.android.package-archive");
                         } catch (RuntimeException e) {
                             e.printStackTrace();
