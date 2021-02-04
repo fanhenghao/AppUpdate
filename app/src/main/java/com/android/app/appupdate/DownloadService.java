@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -88,20 +89,45 @@ public class DownloadService extends Service {
                         Uri contentUri = FileProvider.getUriForFile(context, "com.android.app.appupdate.provider", new File(DOWNLOAD_PATH));
                         install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//这里不能是setFlags(),set会覆盖掉之前的flags
                         install.setDataAndType(contentUri, "application/vnd.android.package-archive");
+                        context.startActivity(install);
                     } else {
-                        try {
-//                            Uri downloadFileUri = dManager.getUriForDownloadedFile(refernece);
-                            Uri downloadFileUri = Uri.parse("file://" + new File(DOWNLOAD_PATH).getAbsolutePath());
-                            install.setDataAndType(downloadFileUri, "application/vnd.android.package-archive");
-                        } catch (RuntimeException e) {
-                            e.printStackTrace();
-                        }
+                        installApk(context, refernece);
                     }
-                    context.startActivity(install);
                 }
             }
         };
         registerReceiver(receiver, filter);
+    }
+
+    private void installApk(Context context, long downloadApkId) {
+
+        DownloadManager dManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        DownloadManager.Query query = new DownloadManager.Query();
+        query.setFilterById(downloadApkId);
+        Cursor c = dManager.query(query);
+        if (c != null) {
+            if (c.moveToFirst()) {
+                int columnIndex = c.getColumnIndex(DownloadManager.COLUMN_STATUS);
+                if (DownloadManager.STATUS_SUCCESSFUL == c.getInt(columnIndex)) {
+                    String downloadFileUrl = c.getString(c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
+                    startInstall(context, Uri.parse(downloadFileUrl));
+                }
+            }
+            c.close();
+        }
+    }
+
+    private boolean startInstall(Context context, Uri uri) {
+        if (!new File(uri.getPath()).exists()) {
+            System.out.println(" local file has been deleted! ");
+            return false;
+        }
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, "application/vnd.android.package-archive");
+        context.startActivity(intent);
+        return true;
     }
 
     /**
